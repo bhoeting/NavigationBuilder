@@ -16,7 +16,7 @@ Run `composer install`
 Add the service provider to the `providers` array in `app/config/app.php`
 ```php
 'bhoeting\NavigationBuilder\NavigationServiceProvider',
-'''
+```
 Then add the facade to the `aliases` array
 ```php
 'Navigation' => 'bhoeting\NavigationBuilder\Navigation'
