@@ -1,11 +1,19 @@
 <?php namespace bhoeting\NavigationBuilder;
 
+use \Response;
 use \View;
 
+/**
+ * @property string containerTemplate
+ * @property string activeClass
+ * @property string itemTemplate
+ * @property Item[] items
+ */
 abstract class AbstractNavigation {
 
 	/**
-	 * @param array $items
+	 * @param  Item[] $items
+	 * @return AbstractNavigation
 	 */
 	public function __construct($items = null)
 	{
@@ -13,14 +21,28 @@ abstract class AbstractNavigation {
 		{
 			$this->items = $items;
 		}
+
+		return $this;
 	}
 
 	/**
-	 * @return array
+	 * @return Item[]
 	 */
 	public function getItems()
 	{
 		return $this->items;
+	}
+
+
+	/**
+	 * @param array
+	 * @return AbstractNavigation
+	 */
+	public function setItems($items)
+	{
+		$this->items = $items;
+
+		return $this;
 	}
 
 	/**
@@ -32,14 +54,6 @@ abstract class AbstractNavigation {
 	}
 
 	/**
-	 * @param array
-	 */
-	public function setItems($items)
-	{
-		$this->items = $items;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getActiveClass()
@@ -48,7 +62,7 @@ abstract class AbstractNavigation {
 	}
 
 	/**
-	 * @return View
+	 * @return Response
 	 */
 	public function getNavigationHtml()
 	{
