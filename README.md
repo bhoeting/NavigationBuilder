@@ -11,7 +11,7 @@ A navigation HTML generator for Laravel.
 }
 ```
 
-Run `composer install'
+Run `composer install`
 
 Add the service provider to the `providers` array in `app/config/app.php`
 ```php
@@ -45,10 +45,12 @@ Also note that the `about` item has an a class of `active`.  This is because the
 Items are also active when the current URL matches a pattern of the item's link.  For instance, `http://localhost:8000/about/who-we-are` will also make the `about`	item active.
 
 The display text and URL for each item are based on the strings provided in the array.  You can specify your own like so:
+
 ```php
 {{ Navigation::create['home' => ['url' => '/'], 'about' => ['text' => 'about-us'], 'contact']) }}
 ```
-Output: ```html
+Output:
+```html
 <ul class="nav navbar-nav">
 	<li class="">
 		<a href="http://localhost:8000/">Home</a>
@@ -61,8 +63,8 @@ Output: ```html
 	</li>
 </ul>
 ```
-### Advanced
 
+### Advanced
 You can easily re-use and configure Navigations by extending the provided `AbstractNavigaiton` and specifying your own templates, active class, and Items.
 ```php
 // app/Acme/Navigation/MasterNavigation.php
@@ -87,7 +89,9 @@ class MasterNavigation extends AbstractNavigation {
 
 }
 ```
+
 Then in your view:
+
 ```php
 {{ Navigation::create('Acme\Navigation\MasterNavigation') }}
 ```
