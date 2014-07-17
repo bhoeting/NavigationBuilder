@@ -1,6 +1,6 @@
 {
     "name": "bhoeting/navigation-builder",
-    "description": "",
+    "description": "A Blade helper to easily create Navigation HTML.",
     "authors": [
         {
             "name": "Brennan Hoeting",
