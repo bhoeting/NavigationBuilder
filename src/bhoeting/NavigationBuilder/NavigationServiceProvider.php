@@ -14,7 +14,7 @@ class NavigationServiceProvider extends ServiceProvider {
 
 	public function boot()
 	{
-		$this->package('bhoeting/navigtaion-builder');
+		$this->package('bhoeting/navigation-builder');
 	}
 
 	/**
