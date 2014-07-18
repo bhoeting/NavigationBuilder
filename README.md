@@ -7,7 +7,7 @@ A navigation HTML generator for Laravel.
 
 ```js
 "require": {
-	"bhoeting\navigation-builder": "~1.0"
+	"bhoeting/navigation-builder": "~1.0"
 }
 ```
 
