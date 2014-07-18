@@ -89,8 +89,23 @@ class MasterNavigation extends AbstractNavigation {
 
 }
 ```
-
+Create the templates:
+`app/views/navigation/item.blade.php`
+```php
+<li class="{{ $item->makeActive() }}">
+	<a href="{{ $item->makeUrl() }}">
+		{{ $item->getText() }}
+	</a>
+</li>
+```
+`app/views/navigation/container.blade.php`
+```php
+<ul class="nav navbar-nav">
+	{{ $navigation->getItemHtml() }}
+</ul>
+```
 Then in your view:
+
 
 ```php
 {{ Navigation::create('Acme\Navigation\MasterNavigation') }}
