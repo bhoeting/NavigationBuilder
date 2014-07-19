@@ -7,7 +7,7 @@ A navigation HTML generator for Laravel.
 
 ```js
 "require": {
-	"bhoeting\navigation-builder": "~1.0"
+	"bhoeting/navigation-builder": "~1.0"
 }
 ```
 
@@ -16,7 +16,7 @@ Run `composer install`
 Add the service provider to the `providers` array in `app/config/app.php`
 ```php
 'bhoeting\NavigationBuilder\NavigationServiceProvider',
-'''
+```
 Then add the facade to the `aliases` array
 ```php
 'Navigation' => 'bhoeting\NavigationBuilder\Navigation'
@@ -89,8 +89,23 @@ class MasterNavigation extends AbstractNavigation {
 
 }
 ```
-
+Create the templates:
+`app/views/navigation/item.blade.php`
+```php
+<li class="{{ $item->makeActive() }}">
+	<a href="{{ $item->makeUrl() }}">
+		{{ $item->getText() }}
+	</a>
+</li>
+```
+`app/views/navigation/container.blade.php`
+```php
+<ul class="nav navbar-nav">
+	{{ $navigation->getItemHtml() }}
+</ul>
+```
 Then in your view:
+
 
 ```php
 {{ Navigation::create('Acme\Navigation\MasterNavigation') }}
