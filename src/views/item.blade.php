@@ -1,4 +1,4 @@
-<li class="{{ $item->makeActive() }}">
+<li class="{{ $item->makeActive('derp') }}">
 	<a href="{{ $item->makeUrl() }}">
 		{{ $item->getText() }}
 	</a>

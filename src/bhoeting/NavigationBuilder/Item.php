@@ -1,5 +1,6 @@
 <?php namespace bhoeting\NavigationBuilder;
 
+use DB;
 use \URL;
 use \View;
 use \Request;
@@ -28,13 +29,6 @@ class Item {
 	private $text;
 
 	/**
-	 * The CSS class[es] for when the Item is active.
-	 * 
-	 * @var string
-	 */ 
-	private $activeClass;
-
-	/**
 	 * The keys for the Item array.
 	 *
 	 * @var array
@@ -42,23 +36,59 @@ class Item {
 	public static $attributes = ['url', 'text'];
 
 	/**
-	 * @param array  $attributes
-	 * @param string $name
-	 * @param string $activeClass
+	 * Create an Item from an array of attributes.
+	 *
+	 * @param  array $attributes
+	 * @return Item
 	 */
-	public function __construct($attributes, $name, $activeClass)
+	public static function fromArray($attributes)
 	{
-		$this->make($attributes, $name, $activeClass);	
+		$item = new Item;
+
+		$item->setName($attributes['name']);
+
+		foreach (self::$attributes as $attribute)
+		{
+			$func = 'set' . ucwords($attribute);
+
+			if ( ! isset($attributes[$attribute]))
+			{
+				$func .= 'FromName';
+
+				$item->$func($item->getName());
+			}
+			else
+			{
+				$item->$func($attributes[$attribute]);
+			}
+		}
+
+		return $item;
+	}
+
+	public static function makeItemsFromDB($table)
+	{
+		$items = [];
+
+		$itemsFromDb = DB::table($table)->get();
+
+		foreach ($itemsFromDb as $item)
+		{
+			$attributes = get_object_vars($item);
+
+			array_push($items, Item::fromArray($attributes));
+		}
+
+		return $items;
 	}
 
 	/**
 	 * Turn an array into an array of Item objects.
 	 *
 	 * @param  array $itemArray
-	 * @param string $activeClass
 	 * @return array
 	 */
-	public static function makeItems($itemArray, $activeClass = '')
+	public static function makeItems($itemArray)
 	{
 		$items = [];
 
@@ -71,49 +101,12 @@ class Item {
 				$itemArray[$itemName] = [];
 
 				unset($itemArray[$index]);
+			}
 
-				array_push($items, new Item($itemArray[$itemName], $itemName, $activeClass));
-			}
-			else
-			{
-				array_push($items, new Item($itemArray[$index], $index, $activeClass));
-			}
+			array_push($items, Item::fromArray($itemArray[$index]));
 		}
 
 		return $items;
-	}
-
-	/**
-	 * Convert an array of attributes to an Item object.
-	 *
-	 * @param  array  $attributes
-	 * @param  string $name
-	 * @param  string $activeClass
-	 * @return Item
-	 */
-	public function make($attributes, $name, $activeClass = '')
-	{
-		$this->name = $name;
-
-		$this->activeClass = $activeClass;
-
-		foreach (self::$attributes as $attribute)
-		{
-			$func = 'set' . ucwords($attribute);
-
-			if ( ! array_key_exists($attribute, $attributes))
-			{
-				$func .= 'FromName';
-
-				$this->$func($name);
-			}
-			else
-			{
-				$this->$func($attributes[$attribute]);
-			}
-		}
-
-		return $this;
 	}
 
 	/**
@@ -129,11 +122,12 @@ class Item {
 	/**
 	 * If the Item is active, then return the active class.
 	 *
+	 * @param  string $activeClass
 	 * @return string
 	 */
-	public function makeActive()
+	public function makeActive($activeClass = 'active')
 	{
-		return ($this->isActive()) ? $this->activeClass : '';
+		return $this->isActive() ? $activeClass : '';
 	}
 
 	/**
@@ -163,6 +157,17 @@ class Item {
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @param  string $name
+	 * @return $this
+	 */
+	private function setName($name)
+	{
+		$this->name = $name;
+
+		return $this;
 	}
 
 	/**
@@ -204,25 +209,6 @@ class Item {
 	}
 
 	/**
-	 * @return Item
-	 */ 
-	public function getActiveClass()
-	{
-		return $this->activeClass;
-	}
-
-	/**
-	 * @param  string $activeClass
-	 * @return Item
-	 */ 
-	public function setActiveClass($activeClass)
-	{
-		$this->activeClass = $activeClass;
-
-		return $this;
-	}
-
-	/**
 	 * Generate the Item's url based off its name.
      *
 	 * @return Item
@@ -245,5 +231,6 @@ class Item {
 
 		return $this;
 	}
+
 
 }

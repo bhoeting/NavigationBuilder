@@ -5,9 +5,9 @@ use \View;
 
 /**
  * @property string containerTemplate
- * @property string activeClass
  * @property string itemTemplate
  * @property Item[] items
+ * @property string table
  */
 abstract class AbstractNavigation {
 
@@ -33,7 +33,6 @@ abstract class AbstractNavigation {
 		return $this->items;
 	}
 
-
 	/**
 	 * @param array
 	 * @return AbstractNavigation
@@ -54,19 +53,29 @@ abstract class AbstractNavigation {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getActiveClass()
-	{
-		return $this->activeClass;
-	}
-
-	/**
 	 * @return Response
 	 */
 	public function getNavigationHtml()
 	{
 		return View::make($this->containerTemplate)->withNavigation($this);
+	}
+
+	/**
+	 * Make the Item array contain Item objects.
+	 * 
+	 * @return void
+	 */
+	public function initializeItems()
+	{
+		if (isset($this->table))
+		{
+			$this->items = Item::makeItemsFromDB($this->table);
+		}
+		else
+		{
+			$this->items = Item::makeItems($this->items);
+		}
+
 	}
 
 	/**
@@ -76,7 +85,7 @@ abstract class AbstractNavigation {
 	{
 		$html = '';
 
-		$this->items = Item::makeItems($this->items, $this->activeClass);
+		$this->initializeItems();
 
 		foreach ($this->items as $item)
 		{
@@ -85,5 +94,5 @@ abstract class AbstractNavigation {
 
 		return $html;
 	}
-
+	
 }
