@@ -86,7 +86,7 @@ class Item {
 	 * Turn an array into an array of Item objects.
 	 *
 	 * @param  array $itemArray
-	 * @return array
+	 * @return array|bool
 	 */
 	public static function makeItems($itemArray)
 	{
@@ -94,14 +94,10 @@ class Item {
 
 		if (count($itemArray) < 1) return false;
 
+
 		foreach ($itemArray as $index => $itemName)
 		{
-			if ( ! is_array($itemArray[$index]))
-			{
-				$itemArray[$itemName] = [];
-
-				unset($itemArray[$index]);
-			}
+			$itemArray[$index]['name'] = $index;
 
 			array_push($items, Item::fromArray($itemArray[$index]));
 		}
