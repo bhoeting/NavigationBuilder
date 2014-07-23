@@ -2,7 +2,7 @@
 
 class NavigationBuilder {
 
-	public function create($param)	
+	public function create($param)
 	{
 		if (is_array($param))
 		{

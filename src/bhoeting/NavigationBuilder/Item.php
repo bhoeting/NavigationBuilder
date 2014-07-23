@@ -94,10 +94,19 @@ class Item {
 
 		if (count($itemArray) < 1) return false;
 
-
 		foreach ($itemArray as $index => $itemName)
 		{
-			$itemArray[$index]['name'] = $index;
+			if ( ! is_array($itemArray[$index]))
+			{
+				$itemArray[$index] = [];
+
+				$itemArray[$index]['name'] = $itemName;
+			}
+			else
+			{
+				$itemArray[$index]['name'] = $index;
+			}
+
 
 			array_push($items, Item::fromArray($itemArray[$index]));
 		}
