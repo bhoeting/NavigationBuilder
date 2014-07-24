@@ -22,6 +22,13 @@ class Item {
 	private $url;
 
 	/**
+	 * The route the item will link to.
+	 * 
+	 * @var string
+	 */ 
+	private $route;
+
+	/**
 	 * The display text of the item.
 	 *
 	 * @var string
@@ -29,11 +36,18 @@ class Item {
 	private $text;
 
 	/**
-	 * The keys for the Item array.
+	 * The attriubutes each Item could have.
 	 *
 	 * @var array
 	 */
-	public static $attributes = ['url', 'text'];
+	public static $attributes = ['url', 'text', 'route'];
+
+	/**
+	 * The attributes that can be null.
+	 * 
+	 * @var array
+	 */ 
+	public static $optionalAttributes = ['route'];
 
 	/**
 	 * Create an Item from an array of attributes.
@@ -51,7 +65,7 @@ class Item {
 		{
 			$func = 'set' . ucwords($attribute);
 
-			if ( ! isset($attributes[$attribute]))
+			if ( ! isset($attributes[$attribute]) && ! self::isOptional($attribute) )
 			{
 				$func .= 'FromName';
 
@@ -59,13 +73,20 @@ class Item {
 			}
 			else
 			{
-				$item->$func($attributes[$attribute]);
+				if (array_key_exists(	$attribute, $attributes))
+					$item->$func($attributes[$attribute]);
 			}
 		}
 
 		return $item;
 	}
 
+	/**
+	 * Create Items by reading records from a DB table.
+	 * 
+	 * @param  string $table
+	 * @return Item[] $items
+	 */ 
 	public static function makeItemsFromDB($table)
 	{
 		$items = [];
@@ -107,7 +128,6 @@ class Item {
 				$itemArray[$index]['name'] = $index;
 			}
 
-
 			array_push($items, Item::fromArray($itemArray[$index]));
 		}
 
@@ -136,6 +156,17 @@ class Item {
 	}
 
 	/**
+	 * Check if an attribute is optional.
+	 *
+	 * @param  string $attribute
+	 * @return boolean
+	 */
+	private static function isOptional($attribute)
+	{
+		return in_array($attribute, self::$optionalAttributes);
+	}
+
+	/**
 	 * Get HTML from the provided Item template.
 	 *
 	 * @param  string $view
@@ -153,7 +184,9 @@ class Item {
 	 */ 
 	public function makeUrl()
 	{
-		return URL::to($this->url);
+		return $this->route == null
+			? URL::to($this->url)
+			: URL::route($this->route);
 	}
 
 	/**
@@ -192,6 +225,25 @@ class Item {
 		$this->url = $url;
 
 		return $this;		
+	}
+
+	/**
+	 * @return string
+	 */ 
+	public function getRoute()
+	{
+		return $this->route;
+	}
+
+	/**
+	 * @param  string $route
+	 * @return Item
+	 */
+	public function setRoute($route)
+	{
+		$this->route = $route;
+
+		return $this;
 	}
 
 	/**
@@ -236,6 +288,5 @@ class Item {
 
 		return $this;
 	}
-
 
 }
