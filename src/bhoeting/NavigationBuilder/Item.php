@@ -59,22 +59,20 @@ class Item {
 	{
 		$item = new Item;
 
-		$item->setName($attributes['name']);
+		$item->name = $attributes['name'];
 
 		foreach (self::$attributes as $attribute)
 		{
-			$func = 'set' . ucwords($attribute);
-
 			if ( ! isset($attributes[$attribute]) && ! self::isOptional($attribute) )
 			{
-				$func .= 'FromName';
+				$func = 'set' . ucwords($attribute) . 'FromName';
 
-				$item->$func($item->getName());
+				$item->$func($item->name);
 			}
 			else
 			{
-				if (array_key_exists(	$attribute, $attributes))
-					$item->$func($attributes[$attribute]);
+				if (array_key_exists($attribute, $attributes))
+					$item->$attribute = ($attributes[$attribute]);
 			}
 		}
 
@@ -178,6 +176,16 @@ class Item {
 	}
 
 	/**
+	 * Get the Item's display text.
+	 * 
+	 * @return string
+	 */
+	public function makeText()
+	{
+		return $this->text;
+	}
+
+	/**
 	 * Get the full URL based of the url private data.
 	 * 
 	 * @return string
@@ -190,89 +198,13 @@ class Item {
 	}
 
 	/**
-	 * @return string
-	 */ 
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	 * @param  string $name
-	 * @return $this
-	 */
-	private function setName($name)
-	{
-		$this->name = $name;
-
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */ 
-	public function getUrl()
-	{
-		return $this->url;
-	}
-
-	/**
-	 * @param  string $url 
-	 * @return Item
-	 */
-	public function setUrl($url)
-	{
-		$this->url = $url;
-
-		return $this;		
-	}
-
-	/**
-	 * @return string
-	 */ 
-	public function getRoute()
-	{
-		return $this->route;
-	}
-
-	/**
-	 * @param  string $route
-	 * @return Item
-	 */
-	public function setRoute($route)
-	{
-		$this->route = $route;
-
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */ 
-	public function getText()
-	{
-		return $this->text;
-	}
-
-	/**
-	 * @param  string $text
-	 * @return Item
-	 */  
-	public function setText($text)
-	{
-		$this->text = $text;
-
-		return $this;
-	}
-
-	/**
 	 * Generate the Item's url based off its name.
      *
 	 * @return Item
 	 */
 	private function setUrlFromName()
 	{
-		$this->setUrl($this->name);
+		$this->url = $this->name;
 
 		return $this;
 	}
@@ -284,7 +216,7 @@ class Item {
 	 */ 
 	private function setTextFromName()
 	{
-		$this->setText(ucwords($this->name));
+		$this->text = ucwords($this->name);
 
 		return $this;
 	}
