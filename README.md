@@ -7,7 +7,7 @@ A navigation HTML generator for Laravel.
 
 ```js
 "require": {
-	"bhoeting/navigation-builder": "~1.1"
+	"bhoeting/navigation-builder": "*"
 }
 ```
 
@@ -47,7 +47,7 @@ Items are also active when the current URL matches a pattern of the item's link.
 The display text and URL for each item are based on the strings provided in the array.  You can specify your own like so:
 
 ```php
-{{ Navigation::create['home' => ['url' => '/'], 'about' => ['text' => 'about-us'], 'contact']) }}
+{{ Navigation::create['home' => ['url' => '/'], 'about' => ['text' => 'about-us'], 'contact' => ['route' => 'contact.us']]) }}
 ```
 Output:
 ```html
@@ -78,7 +78,7 @@ class MasterNavigation extends AbstractNavigation {
 	protected $items = [
 		'home'    => ['url' => '/'],
 		'about'   => ['text' => 'About us'],
-		'contact' => ['text' => 'Contact us']
+		'contact' => ['route' => 'contact.page']
 	];
 
 
@@ -127,6 +127,7 @@ class CreateNavigationTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('url')->nullable();
+			$table->string('route')->nullable();
 			$table->string('text')->nullable();
 		});
 	}
