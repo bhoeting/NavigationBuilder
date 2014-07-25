@@ -11,6 +11,10 @@ use \View;
  */
 abstract class AbstractNavigation {
 
+	protected $itemTemplate = 'navigation-builder::item';
+
+	protected $containerTemplate = 'navigation-builder::container';
+
 	/**
 	 * @param  Item[] $items
 	 * @return AbstractNavigation
