@@ -36,18 +36,25 @@ class Item {
 	private $text;
 
 	/**
+	 * The name of the icon that can be displayed next to an item's text.
+	 * 
+	 * @var string
+	 */ 
+	private $icon;
+
+	/**
 	 * The attriubutes each Item could have.
 	 *
 	 * @var array
 	 */
-	public static $attributes = ['url', 'text', 'route'];
+	public static $attributes = ['url', 'text', 'route', 'icon'];
 
 	/**
 	 * The attributes that can be null.
 	 * 
 	 * @var array
 	 */ 
-	public static $optionalAttributes = ['route'];
+	public static $optionalAttributes = ['route', 'icon'];
 
 	/**
 	 * Create an Item from an array of attributes.
@@ -72,7 +79,9 @@ class Item {
 			else
 			{
 				if (array_key_exists($attribute, $attributes))
+				{
 					$item->$attribute = ($attributes[$attribute]);
+				}
 			}
 		}
 
@@ -183,6 +192,20 @@ class Item {
 	public function makeText()
 	{
 		return $this->text;
+	}
+
+	/**
+	 * Create the HTML for the item's icon.
+	 *
+	 * @return string
+	 */ 
+	public function makeIcon()
+	{
+		if ($this->icon != null) 
+		{
+			return "<i class='fa fa-{$this->icon}'></i> ";
+		}
+		return '';
 	}
 
 	/**

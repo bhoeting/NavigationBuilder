@@ -47,7 +47,7 @@ Items are also active when the current URL matches a pattern of the item's link.
 The display text and URL for each item are based on the strings provided in the array.  You can specify your own like so:
 
 ```php
-{{ Navigation::create['home' => ['url' => '/'], 'about' => ['text' => 'about-us'], 'contact' => ['route' => 'contact.us']]) }}
+{{ Navigation::create(['home' => ['url' => '/'], 'about' => ['text' => 'about-us'], 'contact' => ['route' => 'contact.us']]) }}
 ```
 Output:
 ```html
@@ -62,6 +62,18 @@ Output:
 		<a href="http://localhost:8000/contact">Contact</a>
 	</li>
 </ul>
+```
+
+You can also associate a Font Awesome Icon to be displayed next to the Item's text.
+```php
+{{ Navigation::create(['home' => ['url' => '/', 'icon' => 'user']]) }}
+```
+Will output:
+```html
+...
+<li class="">
+	<i class="fa fa-user"></i> Home
+</li>
 ```
 
 ### Advanced
