@@ -203,7 +203,21 @@ class Item {
 	{
 		if ($this->icon != null) 
 		{
-			return "<i class='fa fa-{$this->icon}'></i> ";
+			$iconString = '';
+
+			if (strpos($this->icon, '|'))
+			{
+				foreach (explode('|', $this->icon) as $icon)
+				{
+					$iconString .= " fa-{$icon}";		
+				}
+			}
+			else 
+			{
+				$iconString = 'fa-' . $this->icon;
+			}
+						
+			return "<i class='fa {$iconString}'></i> ";
 		}
 		return '';
 	}
