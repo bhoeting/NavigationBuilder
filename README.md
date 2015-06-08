@@ -1,4 +1,4 @@
-(this project will not be updated for Laravel 5.)
+### This project will not be updated for Laravel 5.
 
 NavigationBuilder
 =================
